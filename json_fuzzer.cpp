@@ -31,6 +31,17 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
             j.erase("fuzz_test");
         }
 
+        if (j.is_boolean()) {
+            bool val = j.get<bool>();
+            (void)val;
+        }
+
+        if (j.is_array()) {
+            for (auto& item : j) {
+                (void)item;
+            }
+        }
+
         try {
             int num = j.get<int>();
             (void)num;
@@ -54,7 +65,7 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
         
         try {
             json patchedJson = j.patch(patch);
-            json mergedJson = j.merge_patch(mergePatch);
+            j.merge_patch(mergePatch);
         } catch (...) {}
 
         try {
